@@ -1,3 +1,4 @@
 gql[aiohttp]
 nvdlib==0.5.8
 packaging
+security==1.2.1
