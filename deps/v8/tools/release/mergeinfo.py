@@ -12,6 +12,7 @@ import sys
 import re
 
 from subprocess import Popen, PIPE
+from security import safe_command
 
 GIT_OPTION_HASH_ONLY = '--pretty=format:%H'
 GIT_OPTION_NO_DIFF = '--quiet'
@@ -23,7 +24,7 @@ def git_execute(working_dir, args, verbose=False):
   if verbose:
     print("Git working dir: " + working_dir)
     print("Executing git command:" + str(command))
-  p = Popen(args=command, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+  p = safe_command.run(Popen, args=command, stdin=PIPE, stdout=PIPE, stderr=PIPE)
   output, err = p.communicate()
   rc = p.returncode
   if rc != 0:
