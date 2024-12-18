@@ -42,6 +42,7 @@ import re
 import subprocess
 import sys
 import time
+from security import safe_command
 
 
 USAGE="""usage: %prog [OPTION]...
@@ -687,8 +688,7 @@ class LibraryRepo(object):
 
   def HasDynamicSymbols(self, filename):
     if filename.endswith(".ko"): return False
-    process = subprocess.Popen(
-      "%s -h %s" % (OBJDUMP_BIN, filename),
+    process = safe_command.run(subprocess.Popen, "%s -h %s" % (OBJDUMP_BIN, filename),
       shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     pipe = process.stdout
     try:
@@ -724,8 +724,7 @@ class LibraryRepo(object):
       dynamic_symbols = "-T"
     else:
       dynamic_symbols = ""
-    process = subprocess.Popen(
-      "%s -h -t %s -C %s" % (OBJDUMP_BIN, dynamic_symbols, mmap_info.filename),
+    process = safe_command.run(subprocess.Popen, "%s -h -t %s -C %s" % (OBJDUMP_BIN, dynamic_symbols, mmap_info.filename),
       shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     pipe = process.stdout
     after_section = None

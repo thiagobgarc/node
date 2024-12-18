@@ -8,6 +8,7 @@ import os.path
 import signal
 import subprocess
 import sys
+from security import safe_command
 
 GCMOLE_PATH = os.path.dirname(os.path.abspath(__file__))
 CLANG_BIN = os.path.join(GCMOLE_PATH, 'gcmole-tools', 'bin')
@@ -39,8 +40,7 @@ if not os.path.isfile("out/build/gen/torque-generated/builtin-definitions.h"):
   sys.exit(-1)
 
 gcmole_py_options = sys.argv[2:]
-proc = subprocess.Popen(
-    [
+proc = safe_command.run(subprocess.Popen, [
         sys.executable,
         GCMOLE_PY,
         "--v8-build-dir=%s" % os.path.join(V8_ROOT_DIR, 'out', 'build'),
