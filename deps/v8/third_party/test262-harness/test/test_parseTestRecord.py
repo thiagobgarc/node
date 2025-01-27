@@ -119,7 +119,7 @@ description: Trying to declare function at the Block statement
 negative: SyntaxError
 bestPractice: "http://wiki.ecmascript.org/doku.php?id=conventions:no_non_standard_strict_decls"
 flags: [onlyStrict]"""
-        parsed = yaml.load(text)
+        parsed = yaml.load(text, Loader=yaml.SafeLoader)
 
         self.assertEqual("Trying to declare function at the Block statement",
                          parsed['description'])

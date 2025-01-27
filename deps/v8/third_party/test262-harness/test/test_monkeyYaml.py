@@ -18,26 +18,26 @@ import _monkeyYaml as monkeyYaml
 class TestMonkeyYAMLParsing(unittest.TestCase):
 
     def test_empty(self):
-        self.assertEqual(monkeyYaml.load(""), yaml.load(""))
+        self.assertEqual(monkeyYaml.load(""), yaml.load("", Loader=yaml.SafeLoader))
 
     def test_newline(self):
-        self.assertEqual(monkeyYaml.load("\n"), yaml.load("\n"))
+        self.assertEqual(monkeyYaml.load("\n"), yaml.load("\n", Loader=yaml.SafeLoader))
 
     def test_oneline(self):
         y = "foo: bar"
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_twolines(self):
         y = "foo: bar\nbaz_bletch : blith:er"
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_multiLine(self):
         y = "foo: >\n bar\nbaz: 3"
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_es5id(self):
         y = "es5id: 15.2.3.6-4-102"
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_Multiline_1(self):
         lines = [" foo"]
@@ -45,21 +45,21 @@ class TestMonkeyYAMLParsing(unittest.TestCase):
         y = "\n".join([value] + lines)
         (lines, value) = monkeyYaml.myMultiline(lines, value)
         self.assertEqual(lines, [])
-        self.assertEqual(value, yaml.load(y))
+        self.assertEqual(value, yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_Multiline_2(self):
         lines = [" foo", " bar"]
         y = "\n".join([">"] + lines)
         (lines, value) = monkeyYaml.myMultiline(lines)
         self.assertEqual(lines, [])
-        self.assertEqual(value, yaml.load(y))
+        self.assertEqual(value, yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_Multiline_3(self):
         lines = ["  foo", "  bar"]
         y = "\n".join([">"] + lines)
         (lines, value) = monkeyYaml.myMultiline(lines)
         self.assertEqual(lines, [])
-        self.assertEqual(value, yaml.load(y))
+        self.assertEqual(value, yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_Multiline_4(self):
         lines = ["    foo", "    bar", "  other: 42"]
@@ -74,7 +74,7 @@ class TestMonkeyYAMLParsing(unittest.TestCase):
 
     def test_includes_flow(self):
         y = "includes: [a.js,b.js, c_with_wings.js]\n"
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_myFlowList_1(self):
         y = "[a.js,b.js, c_with_wings.js, 3, 4.12]"
@@ -82,7 +82,7 @@ class TestMonkeyYAMLParsing(unittest.TestCase):
 
     def test_multiline_list_1(self):
         y = "foo:\n - bar\n - baz"
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_multiline_list2(self):
         self.assertEqual(monkeyYaml.myRemoveListHeader(2, "  - foo"), "foo")
@@ -94,11 +94,11 @@ class TestMonkeyYAMLParsing(unittest.TestCase):
 
     def test_multiline_list_carriage_return(self):
         y = "foo:\r\n - bar\r\n - baz"
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_oneline_indented(self):
         y = "  foo: bar\n  baz: baf\n"
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
 
     def test_indentation_215(self):
@@ -110,7 +110,7 @@ class TestMonkeyYAMLParsing(unittest.TestCase):
   includes: [propertyHelper.js]
   es6id: 22.1.3.13
  """
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_indentation_215_2(self):
         self.maxDiff = None
@@ -120,7 +120,7 @@ class TestMonkeyYAMLParsing(unittest.TestCase):
   includes: [propertyHelper.js]
   es6id: 22.1.3.13
  """
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_line_folding(self):
         self.maxDiff = None
@@ -129,7 +129,7 @@ description: aaa
              bbb
 es6id:  19.1.2.1
 """
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_line_folding_2(self):
         self.maxDiff = None
@@ -140,7 +140,7 @@ description: ccc
 
 es6id:  19.1.2.1
 """
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_line_folding_3(self):
         self.maxDiff = None
@@ -151,7 +151,7 @@ description: eee
              fff
 es6id:  19.1.2.1
 """
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_line_folding_4(self):
         self.maxDiff = None
@@ -164,7 +164,7 @@ description: ggg
              jjj
 es6id:  19.1.2.1
 """
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_no_folding(self):
         y = """
@@ -174,7 +174,7 @@ description: |
   to: have
   nested: data
 """
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_value_multiline(self):
         y = """
@@ -183,7 +183,7 @@ description:
 
   whose trailing newline should be stripped
 """
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_nested_1(self):
         y = """
@@ -193,7 +193,7 @@ negative:
     type: ReferenceError
 description: foo
 """
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
     def test_nested_2(self):
         y = """
@@ -204,7 +204,7 @@ first:
     second_b: 3
 description: foo
 """
-        self.assertEqual(monkeyYaml.load(y), yaml.load(y))
+        self.assertEqual(monkeyYaml.load(y), yaml.load(y, Loader=yaml.SafeLoader))
 
 if __name__ == '__main__':
     unittest.main()
