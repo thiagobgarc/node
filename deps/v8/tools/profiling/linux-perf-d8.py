@@ -16,6 +16,7 @@ import sys
 import time
 
 import psutil
+from security import safe_command
 
 # ==============================================================================
 
@@ -193,7 +194,7 @@ if options.timeout is None:
   except:
     log("ERROR running perf record")
 else:
-  process = subprocess.Popen(cmd)
+  process = safe_command.run(subprocess.Popen, cmd)
   if not wait_for_process_timeout(process):
     log(f"QUITING d8 processes after {options.timeout}s timeout")
   current_process = psutil.Process()

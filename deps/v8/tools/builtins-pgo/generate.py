@@ -7,6 +7,7 @@
 import subprocess
 import argparse
 from pathlib import Path
+from security import safe_command
 
 parser = argparse.ArgumentParser(
     description='Generate builtin PGO profiles. ' +
@@ -37,7 +38,7 @@ if args.target_cpu == None:
 
 def run(cmd, **kwargs):
   print(f"# CMD: {cmd} {kwargs}")
-  return subprocess.run(cmd, **kwargs)
+  return safe_command.run(subprocess.run, cmd, **kwargs)
 
 
 def try_start_goma():
