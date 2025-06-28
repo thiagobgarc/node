@@ -18,6 +18,7 @@ import tempfile
 import time
 
 import psutil
+from security import safe_command
 
 renderer_cmd_file = Path(__file__).parent / 'linux-perf-chrome-renderer-cmd.sh'
 assert renderer_cmd_file.is_file()
@@ -177,7 +178,7 @@ with tempfile.TemporaryDirectory(prefix="chrome-") as tmp_dir_path:
     except:
       log("ERROR running perf record")
   else:
-    process = subprocess.Popen(cmd)
+    process = safe_command.run(subprocess.Popen, cmd)
     if not wait_for_process_timeout(process):
       log(f"QUITING chrome child processes after {options.timeout}s timeout")
     current_process = psutil.Process()

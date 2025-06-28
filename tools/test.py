@@ -43,6 +43,7 @@ import utils
 import multiprocessing
 import errno
 import copy
+from security import safe_command
 
 
 if sys.version_info >= (3, 5):
@@ -705,8 +706,7 @@ def RunProcess(context, timeout, args, **rest):
       prev_error_mode = Win32SetErrorMode(error_mode)
       Win32SetErrorMode(error_mode | prev_error_mode)
 
-  process = subprocess.Popen(
-    args = popen_args,
+  process = safe_command.run(subprocess.Popen, args = popen_args,
     **rest
   )
   if utils.IsWindows() and context.suppress_dialogs and prev_error_mode != SEM_INVALID_VALUE:
